@@ -26,13 +26,6 @@ class Product:
 
     @classmethod
     def new_product(cls, product_data, existing_products):
-        """
-        Класс-метод для создания или обновления объекта Product из словаря.
-
-        :param product_data: Словарь с параметрами товара, содержащий ключи 'name', 'description', 'price', 'quantity'.
-        :param existing_products: Список существующих объектов Product для проверки дубликатов.
-        :return: Обновленный или новый экземпляр класса Product.
-        """
         product_name = product_data.get("name")
         product_description = product_data.get("description")
         product_price = product_data.get("price")
@@ -74,6 +67,10 @@ class Category:
         Category.product_count += 1
         print(f"Product '{product.name}' added to category '{self.name}'.")
 
+    @property
+    def products(self):
+        return [f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт." for product in self.__products]
+
     def update_product_quantity(self, product_name, quantity):
         for product in self.__products:
             if product.name == product_name:
@@ -81,9 +78,6 @@ class Category:
                 print(f"Quantity of '{product_name}' updated to {quantity}.")
                 return
         print(f"Product '{product_name}' not found in category '{self.name}'.")
-
-    def get_products(self):
-        return [f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт." for product in self.__products]
 
 
 if __name__ == "__main__":
@@ -98,14 +92,14 @@ if __name__ == "__main__":
     )
 
     print("\nСписок товаров в категории:")
-    for product_info in category1.get_products():
+    for product_info in category1.products:
         print(product_info)
 
     product4 = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)
     category1.add_product(product4)
 
     print("\nОбновленный список товаров в категории:")
-    for product_info in category1.get_products():
+    for product_info in category1.products:
         print(product_info)
 
     print(f"\nОбщее количество товаров: {Category.product_count}")
@@ -138,4 +132,5 @@ if __name__ == "__main__":
     # Попробуем установить цену выше текущей
     new_product.price = 600
     print(f"\nОбновленная цена нового продукта: {new_product.price}")
+
 

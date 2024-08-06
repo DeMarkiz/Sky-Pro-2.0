@@ -81,7 +81,7 @@ def test_get_products():
         [product1, product2, product3]
     )
 
-    products = category.get_products()
+    products = category.products
     assert "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт." in products
     assert "Iphone 15, 210000.0 руб. Остаток: 8 шт." in products
     assert "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт." in products
