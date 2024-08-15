@@ -1,136 +1,220 @@
-class Product:
-    def __init__(self, name, description, price, quantity):
-        self.name = name
-        self.description = description
-        self.__price = price  # Приватный атрибут цены
-        self.quantity = quantity
+from src.lawn_grass_product import LawnGrass
+from src.category import Category
+from src.smartphone_product import Smartphone
 
-    @property
-    def price(self):
-        return self.__price
-
-    @price.setter
-    def price(self, value):
-        if value <= 0:
-            print("Цена не должна быть нулевая или отрицательная")
-        elif value < self.__price:
-            confirmation = input(f"Цена понижается с {self.__price} до {value}. Вы уверены? (y/n): ")
-            if confirmation.lower() == 'y':
-                self.__price = value
-                print(f"Цена обновлена на {self.__price}.")
-            else:
-                print("Изменение цены отменено.")
-        else:
-            self.__price = value
-            print(f"Цена обновлена на {self.__price}.")
-
-    @classmethod
-    def new_product(cls, product_data, existing_products):
-        product_name = product_data.get("name")
-        product_description = product_data.get("description")
-        product_price = product_data.get("price")
-        product_quantity = product_data.get("quantity")
-
-        # Поиск существующего товара
-        for product in existing_products:
-            if product.name == product_name:
-                # Обновляем количество и цену
-                product.quantity += product_quantity
-                if product_price > product.price:
-                    product.price = product_price
-                print(f"Product '{product_name}' updated.")
-                return product
-
-        # Если товар не найден, создаем новый
-        return cls(
-            name=product_name,
-            description=product_description,
-            price=product_price,
-            quantity=product_quantity
-        )
-
-
-class Category:
-    category_count = 0
-    product_count = 0
-
-    def __init__(self, name, description, products):
-        self.name = name
-        self.description = description
-        self.__products = []
-        for product in products:
-            self.add_product(product)
-        Category.category_count += 1
-
-    def add_product(self, product):
-        self.__products.append(product)
-        Category.product_count += 1
-        print(f"Product '{product.name}' added to category '{self.name}'.")
-
-    @property
-    def products(self):
-        return [f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт." for product in self.__products]
-
-    def update_product_quantity(self, product_name, quantity):
-        for product in self.__products:
-            if product.name == product_name:
-                product.quantity = quantity
-                print(f"Quantity of '{product_name}' updated to {quantity}.")
-                return
-        print(f"Product '{product_name}' not found in category '{self.name}'.")
-
+# from src.category import CategoryProductsIterator
+# from src.product import Product
+# from src.utils import make_the_python_objects_from_json
 
 if __name__ == "__main__":
-    product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
-    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
-    product3 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
-
-    category1 = Category(
-        "Смартфоны",
-        "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
-        [product1, product2, product3]
+    # ==================== Homework_16_1 ====================================================
+    smartphone1 = Smartphone(
+        "Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5, "S23 Ultra", 256, "Серый"
     )
+    smartphone2 = Smartphone("Iphone 15", "512GB, Gray space", 210000.0, 8, 98.2, "15", 512, "Gray space")
+    smartphone3 = Smartphone("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14, 90.3, "Note 11", 1024, "Синий")
 
-    print("\nСписок товаров в категории:")
-    for product_info in category1.products:
-        print(product_info)
+    print(smartphone1.name)
+    print(smartphone1.description)
+    print(smartphone1.price)
+    print(smartphone1.quantity)
+    print(smartphone1.efficiency)
+    print(smartphone1.model)
+    print(smartphone1.memory)
+    print(smartphone1.color)
 
-    product4 = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)
-    category1.add_product(product4)
+    print(smartphone2.name)
+    print(smartphone2.description)
+    print(smartphone2.price)
+    print(smartphone2.quantity)
+    print(smartphone2.efficiency)
+    print(smartphone2.model)
+    print(smartphone2.memory)
+    print(smartphone2.color)
 
-    print("\nОбновленный список товаров в категории:")
-    for product_info in category1.products:
-        print(product_info)
+    print(smartphone3.name)
+    print(smartphone3.description)
+    print(smartphone3.price)
+    print(smartphone3.quantity)
+    print(smartphone3.efficiency)
+    print(smartphone3.model)
+    print(smartphone3.memory)
+    print(smartphone3.color)
 
-    print(f"\nОбщее количество товаров: {Category.product_count}")
+    grass1 = LawnGrass("Газонная трава", "Элитная трава для газона", 500.0, 20, "Россия", "7 дней", "Зеленый")
+    grass2 = LawnGrass("Газонная трава 2", "Выносливая трава", 450.0, 15, "США", "5 дней", "Темно-зеленый")
 
-    # Создание нового продукта или обновление существующего
-    new_product_data = {
-        "name": "Samsung Galaxy S23 Ultra",
-        "description": "256GB, Серый цвет, 200MP камера",
-        "price": 180000.0,
-        "quantity": 5
-    }
-    new_product = Product.new_product(new_product_data, category1._Category__products)
+    print(grass1.name)
+    print(grass1.description)
+    print(grass1.price)
+    print(grass1.quantity)
+    print(grass1.country)
+    print(grass1.germination_period)
+    print(grass1.color)
 
-    # Печать информации о новом или обновленном продукте
-    print(
-        f"\nНовый или обновленный продукт:\nНазвание: {new_product.name}\nОписание: {new_product.description}\nЦена: {new_product.price}\nКоличество: {new_product.quantity}")
+    print(grass2.name)
+    print(grass2.description)
+    print(grass2.price)
+    print(grass2.quantity)
+    print(grass2.country)
+    print(grass2.germination_period)
+    print(grass2.color)
 
-    # Попробуем установить отрицательную цену
-    new_product.price = -100
-    print(f"\nОбновленная цена нового продукта: {new_product.price}")
+    smartphone_sum = smartphone1 + smartphone2
+    print(smartphone_sum)
 
-    # Попробуем установить нулевую цену
-    new_product.price = 0
-    print(f"\nОбновленная цена нового продукта: {new_product.price}")
+    grass_sum = grass1 + grass2
+    print(grass_sum)
 
-    # Попробуем установить цену ниже текущей
-    new_product.price = 500
-    print(f"\nОбновленная цена нового продукта: {new_product.price}")
+    try:
+        invalid_sum = smartphone1 + grass1
+    except TypeError:
+        print("Возникла ошибка TypeError при попытке сложения")
+    else:
+        print("Не возникла ошибка TypeError при попытке сложения")
 
-    # Попробуем установить цену выше текущей
-    new_product.price = 600
-    print(f"\nОбновленная цена нового продукта: {new_product.price}")
+    category_smartphones = Category("Смартфоны", "Высокотехнологичные смартфоны", [smartphone1, smartphone2])
+    category_grass = Category("Газонная трава", "Различные виды газонной травы", [grass1, grass2])
 
+    category_smartphones.add_product(smartphone3)
 
+    print(category_smartphones.products)
+
+    print(Category.product_count)
+
+    try:
+        category_smartphones.add_product("Not a product")
+    except TypeError:
+        print("Возникла ошибка TypeError при добавлении не продукта")
+    else:
+        print("Не возникла ошибка TypeError при добавлении не продукта")
+
+    # ==================== Homework_15_1 ====================================================
+    # product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
+    # product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+    # product3 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
+    #
+    # print(str(product1))
+    # print(str(product2))
+    # print(str(product3))
+    #
+    # category1 = Category(
+    #     "Смартфоны",
+    #     "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
+    #     [product1, product2, product3],
+    # )
+    #
+    # print(str(category1))
+    #
+    # print(category1.products)
+    #
+    # print(product1 + product2)
+    # print(product1 + product3)
+    # print(product2 + product3)
+    #
+    # print("\n" + "*")
+    # for product in CategoryProductsIterator(category1):
+    #     print(str(product))
+
+    # ==================== Homework_14_2 ====================================================
+    # product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
+    # product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+    # product3 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
+    #
+    # category1 = Category(
+    #     "Смартфоны",
+    #     "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
+    #     [product1, product2, product3],
+    # )
+    #
+    # print(category1.products)
+    # product4 = Product('55" QLED 4K', "Фоновая подсветка", 123000.0, 7)
+    # category1.add_product(product4)
+    # print(category1.products)
+    # print(category1.product_count)
+    #
+    # new_product = Product.new_product(
+    #     {
+    #         "name": "Samsung Galaxy S23 Ultra",
+    #         "description": "256GB, Серый цвет, 200MP камера",
+    #         "price": 180000.0,
+    #         "quantity": 5,
+    #     }
+    # )
+    # print(new_product.name)
+    # print(new_product.description)
+    # print(new_product.price)
+    # print(new_product.quantity)
+    #
+    # new_product.price = 800
+    # print(new_product.price)
+    #
+    # new_product.price = -100
+    # print(new_product.price)
+    # new_product.price = 0
+    # print(new_product.price)
+
+    # ==================== Homework_14_1 ====================================================
+    # product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
+    # product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+    # product3 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
+    #
+    # print(product1.name)
+    # print(product1.description)
+    # print(product1.price)
+    # print(product1.quantity)
+    #
+    # print(product2.name)
+    # print(product2.description)
+    # print(product2.price)
+    # print(product2.quantity)
+    #
+    # print(product3.name)
+    # print(product3.description)
+    # print(product3.price)
+    # print(product3.quantity)
+    #
+    # category1 = Category(
+    #     "Смартфоны",
+    #     "Смартфоны, как средство не только коммуникации,\
+    #                      но и получения дополнительных функций для удобства жизни",
+    #     [product1, product2, product3],
+    # )
+    #
+    # print(category1.name == "Смартфоны")
+    # print(category1.description)
+    # print(len(category1.products))
+    # print(category1.category_count)
+    # print(category1.product_count)
+    #
+    # product4 = Product('55" QLED 4K', "Фоновая подсветка", 123000.0, 7)
+    # category2 = Category(
+    #     "Телевизоры",
+    #     "Современный телевизор, который позволяет наслаждаться просмотром,\
+    #                      станет вашим другом и помощником",
+    #     [product4],
+    # )
+    #
+    # print(category2.name)
+    # print(category2.description)
+    # print(len(category2.products))
+    # print(str(category2.products))
+    #
+    # print(Category.category_count)
+    # print(Category.product_count)
+    # print("\n")
+
+    # ==================== Объекты из JSON-файла ============================================
+    # print("====== Объекты из JSON-файла ======")
+    #
+    # categories, _ = make_the_python_objects_from_json()
+    #
+    # if categories:
+    #     for i in range(len(categories)):
+    #         print(f"{i + 1} категория:", categories[i].name)
+    #         print("Описание:", categories[i].description)
+    #         print("Количество продуктов:", len(categories[i].products))
+    #         print()
+    #
+    #     print("Всего категорий:", Category.category_count)
+    #     print("Всего продуктов:", Category.product_count)
