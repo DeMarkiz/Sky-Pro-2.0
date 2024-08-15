@@ -2,8 +2,52 @@ class Product:
     def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
-        self.price = price
+        self.__price = price  # Приватный атрибут цены
         self.quantity = quantity
+
+    @property
+    def price(self):
+        return self.__price
+
+    @price.setter
+    def price(self, value):
+        if value <= 0:
+            print("Цена не должна быть нулевая или отрицательная")
+        elif value < self.__price:
+            confirmation = input(f"Цена понижается с {self.__price} до {value}. Вы уверены? (y/n): ")
+            if confirmation.lower() == 'y':
+                self.__price = value
+                print(f"Цена обновлена на {self.__price}.")
+            else:
+                print("Изменение цены отменено.")
+        else:
+            self.__price = value
+            print(f"Цена обновлена на {self.__price}.")
+
+    @classmethod
+    def new_product(cls, product_data, existing_products):
+        product_name = product_data.get("name")
+        product_description = product_data.get("description")
+        product_price = product_data.get("price")
+        product_quantity = product_data.get("quantity")
+
+        # Поиск существующего товара
+        for product in existing_products:
+            if product.name == product_name:
+                # Обновляем количество и цену
+                product.quantity += product_quantity
+                if product_price > product.price:
+                    product.price = product_price
+                print(f"Product '{product_name}' updated.")
+                return product
+
+        # Если товар не найден, создаем новый
+        return cls(
+            name=product_name,
+            description=product_description,
+            price=product_price,
+            quantity=product_quantity
+        )
 
 
 class Category:
@@ -13,13 +57,27 @@ class Category:
     def __init__(self, name, description, products):
         self.name = name
         self.description = description
-        self.products = products
+        self.__products = []
+        for product in products:
+            self.add_product(product)
         Category.category_count += 1
-        Category.product_count += len(products)
 
     def add_product(self, product):
-        self.products.append(product)
+        self.__products.append(product)
         Category.product_count += 1
+        print(f"Product '{product.name}' added to category '{self.name}'.")
+
+    @property
+    def products(self):
+        return [f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт." for product in self.__products]
+
+    def update_product_quantity(self, product_name, quantity):
+        for product in self.__products:
+            if product.name == product_name:
+                product.quantity = quantity
+                print(f"Quantity of '{product_name}' updated to {quantity}.")
+                return
+        print(f"Product '{product_name}' not found in category '{self.name}'.")
 
 
 if __name__ == "__main__":
@@ -27,40 +85,52 @@ if __name__ == "__main__":
     product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
     product3 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
 
-    print(product1.name)
-    print(product1.description)
-    print(product1.price)
-    print(product1.quantity)
+    category1 = Category(
+        "Смартфоны",
+        "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
+        [product1, product2, product3]
+    )
 
-    print(product2.name)
-    print(product2.description)
-    print(product2.price)
-    print(product2.quantity)
-
-    print(product3.name)
-    print(product3.description)
-    print(product3.price)
-    print(product3.quantity)
-
-    category1 = Category("Смартфоны",
-                         "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
-                         [product1, product2, product3])
-
-    print(category1.name == "Смартфоны")
-    print(category1.description)
-    print(len(category1.products))
-    print(category1.category_count)
-    print(category1.product_count)
+    print("\nСписок товаров в категории:")
+    for product_info in category1.products:
+        print(product_info)
 
     product4 = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)
-    category2 = Category("Телевизоры",
-                         "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником",
-                         [product4])
+    category1.add_product(product4)
 
-    print(category2.name)
-    print(category2.description)
-    print(len(category2.products))
-    print(category2.products)
+    print("\nОбновленный список товаров в категории:")
+    for product_info in category1.products:
+        print(product_info)
 
-    print(Category.category_count)
-    print(Category.product_count)
+    print(f"\nОбщее количество товаров: {Category.product_count}")
+
+    # Создание нового продукта или обновление существующего
+    new_product_data = {
+        "name": "Samsung Galaxy S23 Ultra",
+        "description": "256GB, Серый цвет, 200MP камера",
+        "price": 180000.0,
+        "quantity": 5
+    }
+    new_product = Product.new_product(new_product_data, category1._Category__products)
+
+    # Печать информации о новом или обновленном продукте
+    print(
+        f"\nНовый или обновленный продукт:\nНазвание: {new_product.name}\nОписание: {new_product.description}\nЦена: {new_product.price}\nКоличество: {new_product.quantity}")
+
+    # Попробуем установить отрицательную цену
+    new_product.price = -100
+    print(f"\nОбновленная цена нового продукта: {new_product.price}")
+
+    # Попробуем установить нулевую цену
+    new_product.price = 0
+    print(f"\nОбновленная цена нового продукта: {new_product.price}")
+
+    # Попробуем установить цену ниже текущей
+    new_product.price = 500
+    print(f"\nОбновленная цена нового продукта: {new_product.price}")
+
+    # Попробуем установить цену выше текущей
+    new_product.price = 600
+    print(f"\nОбновленная цена нового продукта: {new_product.price}")
+
+
