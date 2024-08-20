@@ -85,3 +85,4 @@ def test_category_products_iterator(categories: tuple) -> None:
     expected = ["Samsung Galaxy S23 Ultra", "Iphone 15", '55" QLED 4K']
 
     assert [product.name for product in CategoryProductsIterator(category)] == expected
+

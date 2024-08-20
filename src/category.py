@@ -63,3 +63,4 @@ class CategoryProductsIterator:
             return product
         else:
             raise StopIteration
+
