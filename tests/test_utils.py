@@ -85,3 +85,4 @@ def test_make_the_python_objects_from_json_invalid_product(to_json: tuple) -> No
             assert categories_utils is None
             assert products_utils is None
             mocked_open.assert_called_once_with("dummy_path.json")
+

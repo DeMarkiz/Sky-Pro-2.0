@@ -218,3 +218,4 @@ if __name__ == "__main__":
     #
     #     print("Всего категорий:", Category.category_count)
     #     print("Всего продуктов:", Category.product_count)
+

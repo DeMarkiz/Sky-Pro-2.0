@@ -52,3 +52,4 @@ def test_smartphone_add_price(lawn_grass1: LawnGrass) -> None:
     """
     with pytest.raises(TypeError):
         lawn_grass1 + 1000
+

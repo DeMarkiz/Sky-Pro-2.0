@@ -159,3 +159,4 @@ def test_product_add_error(products: tuple) -> None:
     """
     with pytest.raises(TypeError):
         products[1] + 70_000
+

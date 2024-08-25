@@ -66,3 +66,5 @@ class Product:
                 print("Цена осталась прежней")
         else:
             self.__price = amount
+
+

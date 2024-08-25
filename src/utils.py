@@ -62,3 +62,4 @@ def make_the_python_objects_from_json(file_path: str = "data/products.json") -> 
         categories_list.append(category)
 
     return categories_list, all_products_without_categories
+
