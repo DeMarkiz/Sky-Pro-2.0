@@ -1,7 +1,10 @@
 from typing import List
 
+from src.base_product import BaseProduct
+from src.print_mixin import PrintMixin
 
-class Product:
+
+class Product(BaseProduct, PrintMixin):
     """Класс для представления продукта."""
 
     # Атрибут на уровне класса для хранения экземпляров класса в виде списка
@@ -13,6 +16,7 @@ class Product:
         self.description = description
         self.__price = price
         self.quantity = quantity
+        super().__init__()
 
         Product.all_products.append(self)
 
@@ -66,5 +70,3 @@ class Product:
                 print("Цена осталась прежней")
         else:
             self.__price = amount
-
-

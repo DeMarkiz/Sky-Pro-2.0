@@ -27,4 +27,3 @@ class Smartphone(Product):
         if type(other) is Smartphone:
             return round(self.price * self.quantity + other.price * other.quantity)
         raise TypeError()
-

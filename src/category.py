@@ -1,9 +1,10 @@
 from typing import List
 
 from src.product import Product
+from src.base_order_category_properties import BaseOrderCategoryProperties
 
 
-class Category:
+class Category(BaseOrderCategoryProperties):
     """Класс для представления категории."""
 
     # Атрибуты на уровне класса для ведения подсчетов
@@ -63,4 +64,3 @@ class CategoryProductsIterator:
             return product
         else:
             raise StopIteration
-

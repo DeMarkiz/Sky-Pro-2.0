@@ -53,4 +53,3 @@ def test_smartphone_add_price(smartphone1: Smartphone) -> None:
     """
     with pytest.raises(TypeError):
         smartphone1 + 90_000
-
