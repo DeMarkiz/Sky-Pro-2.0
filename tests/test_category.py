@@ -1,6 +1,7 @@
 import pytest
 
 from src.category import Category, CategoryProductsIterator
+from src.product import Product
 
 
 def test_category_init(categories: tuple, category_info: tuple, products: tuple) -> None:
@@ -39,16 +40,52 @@ def test_category_product_count(product_count: int) -> None:
     assert product_count == 3
 
 
-def test_category_add_product(categories: tuple, products: tuple) -> None:
+def test_category_add_product(capsys, categories: tuple, products: tuple) -> None:
     """
     Тестирует метод add_product.
 
+    :param capsys: Фикстура для перехвата вывода.
     :param categories: Картеж экземпляров класса Category.
     :param products: Картеж экземпляров класса Product.
     :return: None.
     """
+    # try
     categories[0].add_product(products[2])
+
+    message = capsys.readouterr()
+    successfully, completed = message.out.strip().split("\n")
+
+    # else
     assert Category.product_count == 4
+    assert successfully == "Товар '55\" QLED 4K' успешно добавлен."
+
+    # finally
+    assert completed == "Обработка добавления товара завершена."
+
+
+def test_category_add_product_zero_error(capsys, categories: tuple) -> None:
+    """
+    Тестирует метод add_product с нулевым количеством товара.
+
+    :param capsys: Фикстура для перехвата вывода.
+    :param categories: Картеж экземпляров класса Category.
+    :return: None.
+    """
+    product = Product("Тест", "Количество: 0", 10, 1)
+    product.quantity = 0  # количество товара: 0
+    # try
+    categories[0].add_product(product)
+
+    message = capsys.readouterr()
+    failed, completed = message.out.strip().split("\n")[1:]
+
+    assert Category.product_count == 4
+
+    # except
+    assert failed == "Невозможно добавить товар с нулевым количеством."
+
+    # finally
+    assert completed == "Обработка добавления товара завершена."
 
 
 def test_category_add_product_error(categories: tuple, products: tuple) -> None:
@@ -85,3 +122,23 @@ def test_category_products_iterator(categories: tuple) -> None:
     expected = ["Samsung Galaxy S23 Ultra", "Iphone 15", '55" QLED 4K']
 
     assert [product.name for product in CategoryProductsIterator(category)] == expected
+
+
+def test_middle_price(categories) -> None:
+    """
+    Тестирует подсчет среднего ценника всех товаров.
+
+    :param categories: Картеж экземпляров класса Category.
+    :return: None.
+    """
+    assert categories[0].middle_price() == 171_000.0
+
+
+def test_middle_price_empty() -> None:
+    """
+    Тестирует подсчет среднего ценника в пустом списке товаров.
+
+    :return: None.
+    """
+    category = Category("Category", "Description", [])
+    assert category.middle_price() == 0.0
