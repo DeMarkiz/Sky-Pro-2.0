@@ -18,6 +18,18 @@ def test_product_init(products: tuple) -> None:
     assert products[0].quantity == 5
 
 
+def test_product_init_value_error() -> None:
+    """
+    Тестирует инициализацию объектов класса Product с нулевым количеством товара.
+
+    :return: None.
+    """
+    with pytest.raises(ValueError) as e:
+        Product("test", "incorrect quantity", 10, 0)
+
+    assert str(e.value) == "Товар с нулевым количеством не может быть добавлен"
+
+
 def test_new_product(product_dict: tuple) -> None:
     """
     Тестирует создание нового товара.

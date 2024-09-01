@@ -1,5 +1,4 @@
-# created by virtualenv automatically
-*
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -38,7 +37,7 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
-#htmlcov/
+htmlcov/
 .tox/
 .nox/
 .coverage
@@ -58,8 +57,6 @@ cover/
 
 # Django stuff:
 *.log
-!src.masks.log
-!src.utils.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -164,3 +161,4 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
 .DS_Store
+*.pyc

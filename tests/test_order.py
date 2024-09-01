@@ -24,15 +24,40 @@ def test_order_init(smartphone1: Smartphone) -> None:
     assert order1.total_price == 150_000
 
 
-def test_order_init_error(smartphone1: Smartphone) -> None:
+def test_order_init_not_enough_error(capsys, smartphone1: Smartphone) -> None:
     """
-    Тестирует покупку товара с ошибкой.
+    Тестирует покупку товара с нехваткой нужного количества товара на складе.
 
+    :param capsys: Фикстура для перехвата вывода.
     :param smartphone1: Экземпляр класса Smartphone.
     :return: None.
     """
-    with pytest.raises(ValueError):
-        Order(smartphone1, 6)
+    Order(smartphone1, 6)
+    message = capsys.readouterr()
+    assert message.out.split("\n")[1] == "Товар Smartphone1 в настоящее время на складе доступен в количестве 5 штук."
+
+
+def test_order_init_zero_error(capsys, smartphone1: Smartphone) -> None:
+    """
+    Тестирует заказ товара с нулевым количеством.
+
+    :param capsys: Фикстура для перехвата вывода.
+    :param smartphone1: Экземпляр класса Smartphone.
+    :return: None.
+    """
+    # try
+    Order(smartphone1, 0)
+
+    message = capsys.readouterr()
+    failed, completed = message.out.strip().split("\n")[1:]
+
+    # except
+    assert failed == "Невозможно добавить товар с нулевым количеством."
+
+    # finally
+    assert completed == "Обработка добавления товара в заказ завершена."
+
+
 
 
 def test_order_str(smartphone1: Smartphone) -> None:
